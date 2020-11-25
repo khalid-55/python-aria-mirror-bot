@@ -1,6 +1,6 @@
 from telegram.ext import BaseFilter
 from telegram import Message
-from bot import AUTHORIZED_CHATS, OWNER_ID, download_dict, download_dict_lock
+from bot import AUTHORIZED_CHATS, OWNER_ID, ADMIN_ID, download_dict, download_dict_lock
 
 
 class CustomFilters:
@@ -9,6 +9,12 @@ class CustomFilters:
             return bool(message.from_user.id == OWNER_ID)
 
     owner_filter = _OwnerFilter()
+
+    class _AdminFilter(BaseFilter):
+        def filter(self, message):
+            return bool(message.from_user.id == ADMIN_ID)
+
+    admin_filter = _AdminFilter()
 
     class _AuthorizedUserFilter(BaseFilter):
         def filter(self, message):
