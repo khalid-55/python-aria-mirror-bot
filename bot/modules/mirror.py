@@ -172,50 +172,54 @@ class MirrorListener(listeners.MirrorListeners):
 
 def _mirror(bot, update, isTar=False, extract=False):
     message_args = update.message.text.split(' ')
-    try:
-        link = message_args[1]
-    except IndexError:
-        link = ''
-    LOGGER.info(link)
-    link = link.strip()
-    reply_to = update.message.reply_to_message
-    if reply_to is not None:
-        file = None
-        tag = reply_to.from_user.username
-        media_array = [reply_to.document, reply_to.video, reply_to.audio]
-        for i in media_array:
-            if i is not None:
-                file = i
-                break
-
-        if len(link) == 0:
-            if file is not None:
-                if file.mime_type != "application/x-bittorrent":
-                    listener = MirrorListener(bot, update, isTar, tag)
-                    tg_downloader = TelegramDownloadHelper(listener)
-                    tg_downloader.add_download(reply_to, f'{DOWNLOAD_DIR}{listener.uid}/')
-                    sendStatusMessage(update, bot)
-                    if len(Interval) == 0:
-                        Interval.append(setInterval(DOWNLOAD_STATUS_UPDATE_INTERVAL, update_all_messages))
-                    return
-                else:
-                    link = file.get_file().file_path
-    else:
-        tag = None
-    if not bot_utils.is_url(link) and not bot_utils.is_magnet(link):
-        sendMessage('No download source provided', bot, update)
+    if "@" not in message_args[0]:
+        sendMessage('Please specify the bot username, E.g /mirror@"BOT USERNAME HERE".', bot, update)
         return
+    else:
+        try:
+            link = message_args[1]
+        except IndexError:
+            link = ''
+        LOGGER.info(link)
+        link = link.strip()
+        reply_to = update.message.reply_to_message
+        if reply_to is not None:
+            file = None
+            tag = reply_to.from_user.username
+            media_array = [reply_to.document, reply_to.video, reply_to.audio]
+            for i in media_array:
+                if i is not None:
+                    file = i
+                    break
 
-    try:
-        link = direct_link_generator(link)
-    except DirectDownloadLinkException as e:
-        LOGGER.info(f'{link}: {e}')
+            if len(link) == 0:
+                if file is not None:
+                    if file.mime_type != "application/x-bittorrent":
+                        listener = MirrorListener(bot, update, isTar, tag)
+                        tg_downloader = TelegramDownloadHelper(listener)
+                        tg_downloader.add_download(reply_to, f'{DOWNLOAD_DIR}{listener.uid}/')
+                        sendStatusMessage(update, bot)
+                        if len(Interval) == 0:
+                            Interval.append(setInterval(DOWNLOAD_STATUS_UPDATE_INTERVAL, update_all_messages))
+                        return
+                    else:
+                        link = file.get_file().file_path
+        else:
+            tag = None
+        if not bot_utils.is_url(link) and not bot_utils.is_magnet(link):
+            sendMessage('No download source provided', bot, update)
+            return
 
-    listener = MirrorListener(bot, update, isTar, tag, extract)
-    ariaDlManager.add_download(link, f'{DOWNLOAD_DIR}/{listener.uid}/',listener)
-    sendStatusMessage(update, bot)
-    if len(Interval) == 0:
-        Interval.append(setInterval(DOWNLOAD_STATUS_UPDATE_INTERVAL, update_all_messages))
+        try:
+            link = direct_link_generator(link)
+        except DirectDownloadLinkException as e:
+            LOGGER.info(f'{link}: {e}')
+
+        listener = MirrorListener(bot, update, isTar, tag, extract)
+        ariaDlManager.add_download(link, f'{DOWNLOAD_DIR}/{listener.uid}/',listener)
+        sendStatusMessage(update, bot)
+        if len(Interval) == 0:
+            Interval.append(setInterval(DOWNLOAD_STATUS_UPDATE_INTERVAL, update_all_messages))
 
 
 @run_async
