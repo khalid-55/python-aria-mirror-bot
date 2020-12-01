@@ -28,7 +28,7 @@
       "value": ""
     },
     "ADMIN_ID": {
-      "description": "The Telegram user ID (not username) of the admin of the bot"
+      "description": "The Telegram user ID (not username) of the admin of the bot",
       "value": ""
     },
     "AUTH_CHATS": {
