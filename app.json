@@ -27,6 +27,10 @@
       "description": "The Telegram user ID (not username) of the owner of the bot",
       "value": ""
     },
+    "ADMIN_ID": {
+      "description": "The Telegram user ID (not username) of the admin of the bot"
+      "value": ""
+    },
     "AUTH_CHATS": {
       "description": "chat ids which you wanted to authorize",
       "value": ""
