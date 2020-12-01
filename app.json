@@ -27,17 +27,13 @@
       "description": "The Telegram user ID (not username) of the owner of the bot",
       "value": ""
     },
-    "ADMIN_ID": {
-      "description": "The Telegram user ID (not username) of the admin of the bot",
-      "value": ""
-    },
     "AUTH_CHATS": {
       "description": "chat ids which you wanted to authorize",
       "value": ""
     },
     "DOWNLOAD_DIR": {
       "description": "The path to the local folder where the downloads should be downloaded to",
-      "value": "downloads",
+      "value": "/home/username/mirror-bot/downloads",
       "required": false
     },
     "DOWNLOAD_STATUS_UPDATE_INTERVAL": {
