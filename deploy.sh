@@ -12,6 +12,7 @@ fi
 heroku login
 heroku create $1
 heroku git:remote -a $1
+heroku stack:set container
 heroku addons:create heroku-postgresql
 git add -f credentials.json token.pickle config.env heroku.yml
 git commit -m "Added Creds."
