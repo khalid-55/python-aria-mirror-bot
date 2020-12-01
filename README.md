@@ -16,13 +16,6 @@ This project is heavily inspired from @out386 's telegram bot which is written i
 - Mirror all youtube-dl supported links
 - Mirror telegram files
 
-# How to deploy in Heroku?
-Hit the deploy to heroku button and follow the further instructions in the screen:
-
-**NB: Usage of Aria2 may leads to the suspension of your heroku account so deploy at your own risk.**
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/khalid-55/python-aria-mirror-bot/)
-
 # How to deploy?
 Deploying is pretty much straight forward and is divided into several steps as follows:
 ## Installing requirements
