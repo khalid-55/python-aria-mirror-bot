@@ -1,5 +1,6 @@
 import requests
-from telegram.ext import CommandHandler, run_async
+import telegram.ext
+from telegram.ext import CommandHandler, run_async, CallbackContext
 
 from bot import Interval, INDEX_URL,LOGGER
 from bot import dispatcher, DOWNLOAD_DIR, DOWNLOAD_STATUS_UPDATE_INTERVAL, download_dict, download_dict_lock
@@ -170,10 +171,14 @@ class MirrorListener(listeners.MirrorListeners):
         else:
             update_all_messages()
 
+def botUsername(update: Update, context: CallbackContext):
+    return context.bot.username
+
+
 def _mirror(bot, update, isTar=False, extract=False):
     message_args = update.message.text.split(' ')
     if "@" not in message_args[0]:
-        sendMessage('Please specify the bot username, E.g /mirror@"BOT USERNAME HERE".', bot, update)
+        sendMessage('Please use /mirror{} instead.'.format(bot.bot.name), bot, update)
         return
     else:
         try:
@@ -225,7 +230,6 @@ def _mirror(bot, update, isTar=False, extract=False):
 @run_async
 def mirror(update, context):
     _mirror(context.bot, update)
-
 
 @run_async
 def tar_mirror(update, context):
